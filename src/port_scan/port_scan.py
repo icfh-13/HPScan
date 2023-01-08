@@ -5,25 +5,27 @@
 """
 
 import sys, os
+
 sys.path.append(os.getcwd())
 
-# module use
+# src use
 
 from time import ctime
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.all import *
 
-from module.helper import helper
+from my_demo.src.helper.helper import input
 
 # GLOBAL VAR
 
-OPEN_PORT = [] 
+OPEN_PORT = []
 
-class PortScan(helper):
+
+class PortScan(input):
     def __init__(self, alive_hosts, port='80', thread=10):
         super().__init__()
-        self.hosts = alive_hosts                        # 输入存活主机列表
-        self.ports = helper.port_input(self, port)      # 输入扫描端口
+        self.hosts = alive_hosts  # 输入存活主机列表
+        self.ports = input.port_input(self, port)  # 输入扫描端口
         self.host_port_open = []
         self.host_port_close = []
         self.thread = thread
@@ -35,16 +37,15 @@ class PortScan(helper):
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.connect((dst_ip, dst_port))
-                self.host_port_open.append(dst_ip+dst_port)
+                self.host_port_open.append(dst_ip + dst_port)
                 sock.close()
             except socket.error as err_msg:
                 text = sr1(IP(dst=dst_ip) / UDP(dport=dst_port), timeout=5, verbose=0)
-                time.sleep(1)                                               # 防止太快而误判
+                time.sleep(1)  # 防止太快而误判
                 if not text:
-                    self.host_port_open.append(dst_ip+":"+dst_port)
+                    self.host_port_open.append(dst_ip + ":" + dst_port)
                 else:
-                    self.host_port_close.append(dst_ip+":"+dst_port)
-
+                    self.host_port_close.append(dst_ip + ":" + dst_port)
 
     def half_scan(self, dst_ip):
         """基于TCP半开的端口扫描"""
@@ -52,13 +53,12 @@ class PortScan(helper):
         print(f"{ctime()}:scan {dst_ip}")
         for dst_port in self.ports:
             try:
-                packet = IP(dst=dst_ip) / TCP(sport=src_port, dport=dst_port, flags="S")
-                response = sr1(packet, timeout=1)
+                pkt = IP(dst=dst_ip) / TCP(sport=src_port, dport=dst_port, flags="S")
+                response = sr1(pkt, timeout=1)
                 if response:
-                    self.host_port_open.append(dst_ip+":"+dst_port)
+                    self.host_port_open.append(dst_ip + ":" + dst_port)
             except Exception as err_msg:
                 continue
-
 
     def scan_threading(self):
         threads = []

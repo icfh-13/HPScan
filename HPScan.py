@@ -5,12 +5,10 @@ CUR_PATH = os.path.abspath(os.path.dirname(__file__))
 ROOT_PATH = os.path.split(CUR_PATH)[0]
 sys.path.append(ROOT_PATH)
 
-# module
-import argparse
-from module.helper import helper
-from module.host_scan import HostScan
-from module.port_scan import PortScan
-#from module.ip_proxy_pool import *
+# src
+from my_demo.src.host_scan.host_scan import HostScan
+from src.port_scan import PortScan
+#from src.ip_proxy_pool import *
 
 describe = '''
 -------------------------
@@ -26,7 +24,7 @@ describe = '''
 # parser.add_argument('-port', dest='port', help="please input port", default=80)
 # parser.add_argument('-mode', dest='mode', help="please input mode")
 # args = parser.parse_args()
-19
+
 # run
 if __name__ == '__main__':
     print(describe)

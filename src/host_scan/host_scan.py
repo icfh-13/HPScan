@@ -6,19 +6,19 @@
 import sys, os
 sys.path.append(os.getcwd())
 
-# module use
-from module.helper import helper
+# src use
+from my_demo.src.helper.helper import input
 from scapy.layers.inet import *
 from scapy.layers.l2 import *
 from scapy.all import *
 
 
 
-class HostScan(helper):
+class HostScan(input):
     def __init__(self, hosts, ports='80'):
         super().__init__()
         self.count = 0
-        self.hosts = helper.ip_input(self, hosts)
+        self.hosts = input.ip_input(self, hosts)
         self.ports = ports
         self.alive_hosts = []
 
