@@ -1,20 +1,14 @@
 # coding:utf-8
-"""
-    Port_Scan
-    支持b段和c段扫描
-"""
 
 import sys, os
 
 sys.path.append(os.getcwd())
 
-# src use
-
 from time import ctime
 from scapy.layers.inet import IP, TCP, UDP
 from scapy.all import *
 
-from my_demo.src.helper.helper import input
+from HPScan.src.helper.input import input
 
 # GLOBAL VAR
 
