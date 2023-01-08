@@ -1,32 +1,34 @@
-
+import time
 import urllib
 import re
-from fake_user_agent import  user_agent
+import os
+from fake_user_agent import user_agent
 from urllib import request
 from urllib import error
 
 from test_ip import test_ip
 from HPScan.src.helper.file_handler import writer
 
-
 IP_INIT_COUNT = 0
+IP_LOG_PATH = f"{os.getcwd()}\..\..\log\ip_log"
 
 
-def spider(url, test_url,ip_count, filename):
+def spider(url, test_url, ip_count, filename):
     UA = user_agent()
     headers = {
         'User-Agent': UA
     }
-    req = urllib.request.Request(url=url, headers=headers)              # 构造请求报文
+    req = urllib.request.Request(url=url, headers=headers)
     try:
         page = urllib.request.urlopen(req)
+        time.sleep(0.05)
     except urllib.error.URLError as err_msg:
         if hasattr(err_msg, 'reason'):
             print(f"error reason:{err_msg.reason}")
         elif hasattr(err_msg, 'code'):
             print(f"error code:{err_msg.code}")
     else:
-        html = page.read().decode('gbk', 'ignore')                      # 获取html资源
+        html = page.read().decode('gbk', 'ignore')
         pattern_ip = r'<td>[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+<\/td>'
         pattern_port = r'<td>[0-9]{1,5}<\/td>'
         re_ip = re.compile(pattern_ip)
@@ -41,6 +43,8 @@ def spider(url, test_url,ip_count, filename):
                 if IP_INIT_COUNT > ip_count:
                     exit(1)
                 else:
-                    writer(path=f"HPScan/log/ip_log/{filename.replace(':', '_').replace(' ','_')}_IP_Pool.txt", text=ip_proxy, mode='a')
+                    # path:../HPScan/log/ip_log/
+                    writer(path=f"{IP_LOG_PATH}\{filename.replace(':', '_').replace(' ', '_')}_IP_Pool.txt",
+                           text=ip_proxy, mode='a')
             else:
                 continue

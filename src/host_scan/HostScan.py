@@ -8,42 +8,24 @@ sys.path.append(os.getcwd())
 
 # src use
 from HPScan.src.helper.input import input
-from scapy.layers.inet import *
-from scapy.layers.l2 import *
 from scapy.all import *
+from icmp_scan import icmp_scan
 
-
+IP_LOG_PATH = f"{os.getcwd()}\..\..\log\ip_log"
 
 class HostScan(input):
     def __init__(self, hosts, ports='80'):
         super().__init__()
-        self.count = 0
-        self.hosts = input.ip_input(self, hosts)
-        self.ports = ports
-        self.alive_hosts = []
-
-    def arp_req(self, ip):
-        pass
-
-    def icmp_req(self, ip):
-        """ICMP SCAN"""
-        try:
-            pkt = Ether() / IP(dst=ip) / ICMP(type=8) / b'hello?'  # 构造数据包
-            req = srp1(pkt, timeout=2, verbose=False)
-            if req:
-                print(f'[+]{ip}:Host is up')
-                self.alive_hosts.append(ip)
-                self.count += 1
-            else:
-                print(f'[-]{ip}:Host is down')
-        except Exception as err_msg:
-            print(f"ERROR:{err_msg}")
+        self.count = 0                                  # 存活主机数目
+        self.hosts = input.ip_input(self, hosts)        # 探测主机
+        self.ports = ports                              # 端口
+        self.alive_hosts = []                           # 存活主机列表
 
     def scan_threading(self):
         threads = []
         length = len(self.hosts)
         for ip in self.hosts:
-            t = threading.Thread(target=self.icmp_req, args=(str(ip),))
+            t = threading.Thread(target=icmp_scan, args=(str(ip),))
             threads.append(t)
         for i in range(length):
             threads[i].start()

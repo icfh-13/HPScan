@@ -2,13 +2,13 @@
 """
     To build the IP-Proxy-Pool, we use the python spider techniques based on 're'
 """
+
 # add to the root path
 import os
 import sys
 from time import ctime
 
 sys.path.append(os.getcwd())
-
 
 from spider import spider
 
@@ -24,29 +24,25 @@ IP_COUNT = 1000  # 爬取的IP数量设置
 TEST_URL = "http://www.baidu.com"
 FILE_NAME = ctime()
 
-def FetchIp():
+
+async def fetch_ip():
     for (site_name, url) in URLs.items():
         if site_name == "免费代理IP":
-            spider(url=url, test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
+            await spider(url=url, test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
         elif site_name == '66免费代理网':
             for i in range(1, 2920):
-                spider(url=f"{url}{i}.html", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
+                await spider(url=f"{url}{i}.html", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
         elif site_name == '89免费代理':
             for i in range(1, 21):
-                spider(url=f"{url}index_{i}.html", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
+                await spider(url=f"{url}index_{i}.html", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
         elif site_name == '云代理':
             for i in range(1, 11):
-                spider(url=f"{url}?stype=1&page={i}", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
+                await spider(url=f"{url}?stype=1&page={i}", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
         elif site_name == '快代理':
             for i in range(1, 4915):
-                spider(url=f"{url}/inha/{i}", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
+                await spider(url=f"{url}/inha/{i}", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
         else:
-            sys.exit(-1)
+            print(f"{os.getcwd()}:Can't find the IP src!")
+            exit(-1)
 
-
-# def ThraedRunIP():
-#     pass
-
-
-if __name__ == '__main__':
-    FetchIp()
+fetch_ip()
