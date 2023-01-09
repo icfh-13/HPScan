@@ -10,7 +10,7 @@ from test_ip import test_ip
 from HPScan.src.helper.file_handler import writer
 
 IP_INIT_COUNT = 0
-IP_LOG_PATH = f"{os.getcwd()}\..\..\log\ip_log"
+IP_LOG_PATH = f"{os.path.dirname(__file__)}\..\..\log\ip_log"
 
 
 def spider(url, test_url, ip_count, filename):
@@ -48,3 +48,4 @@ def spider(url, test_url, ip_count, filename):
                            text=ip_proxy, mode='a')
             else:
                 continue
+

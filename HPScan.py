@@ -3,28 +3,27 @@ import argparse
 import sys
 import os
 
-CUR_PATH = os.path.abspath(os.path.dirname(__file__))
-ROOT_PATH = os.path.split(CUR_PATH)[0]
-sys.path.append(ROOT_PATH)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 from HPScan.src.host_scan.HostScan import *
-from HPScan.src.port_scan.port_scan import PortScan
+from HPScan.src.port_scan.port_scan import *
 from HPScan.src.ip_proxy_pool.proxypool_build import *
 
 describe = '''
 -------------------------
-|    PHScan             |
+|    HPScan             |
 |                       |
 |    python 3.10        |
 -------------------------
 '''
 
 # terminal input
-parser = argparse.ArgumentParser(description="HPScan")
-parser.add_argument('-host', dest='host', help="please input host", required=True)
-parser.add_argument('-port', dest='port', help="please input port", default=80)
-parser.add_argument('-mode', dest='mode', help="please input mode")
-args = parser.parse_args()
+# parser = argparse.ArgumentParser(description="HPScan")
+# parser.add_argument('-host', dest='host', help="please input host", required=True)
+# parser.add_argument('-port', dest='port', help="please input port", default=80)
+# parser.add_argument('-mode', dest='mode', help="please input mode")
+# args = parser.parse_args()
 
 # run
 if __name__ == '__main__':
@@ -44,3 +43,4 @@ if __name__ == '__main__':
     if temp_port:
         port_obj = PortScan(host_obj.alive_hosts, temp_port)
         port_obj.run()
+

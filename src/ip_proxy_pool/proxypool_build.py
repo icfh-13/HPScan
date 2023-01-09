@@ -42,7 +42,7 @@ async def fetch_ip():
             for i in range(1, 4915):
                 await spider(url=f"{url}/inha/{i}", test_url=TEST_URL, ip_count=IP_COUNT, filename=FILE_NAME)
         else:
-            print(f"{os.getcwd()}:Can't find the IP src!")
+            print(f"{os.getcwd()}:Can't find the IP Source!")
             exit(-1)
 
 fetch_ip()
