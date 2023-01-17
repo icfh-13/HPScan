@@ -1,16 +1,25 @@
+"""
+    
+"""
+# add to the root path
+import sys
+import os
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\")   # helper
+sys.path.append(os.path.dirname(__file__))
+
+# module
 import time
 import urllib
 import re
-import os
 from fake_user_agent import user_agent
 from urllib import request
 from urllib import error
 
 from test_ip import test_ip
-from HPScan.src.helper.file_handler import writer
+from helper.file_handler import writer
 
 IP_INIT_COUNT = 0
-IP_LOG_PATH = f"{os.path.dirname(__file__)}\..\..\log\ip_log"
+IP_LOG_PATH_FOR_SPIDER = f"{os.path.dirname(__file__)}\..\..\log\ip_log"
 
 
 def spider(url, test_url, ip_count, filename):
@@ -27,6 +36,8 @@ def spider(url, test_url, ip_count, filename):
             print(f"error reason:{err_msg.reason}")
         elif hasattr(err_msg, 'code'):
             print(f"error code:{err_msg.code}")
+    except Exception as err_msg:
+        print(f"error msg:{err_msg}")
     else:
         html = page.read().decode('gbk', 'ignore')
         pattern_ip = r'<td>[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+<\/td>'
@@ -44,7 +55,7 @@ def spider(url, test_url, ip_count, filename):
                     exit(1)
                 else:
                     # path:../HPScan/log/ip_log/
-                    writer(path=f"{IP_LOG_PATH}\{filename.replace(':', '_').replace(' ', '_')}_IP_Pool.txt",
+                    writer(path=f"{IP_LOG_PATH_FOR_SPIDER}\{filename.replace(':', '_').replace(' ', '_')}_IP_Pool.txt",
                            text=ip_proxy, mode='a')
             else:
                 continue

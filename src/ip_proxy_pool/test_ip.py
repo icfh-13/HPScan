@@ -4,10 +4,9 @@
 
 
 import urllib
-from fake_user_agent import user_agent
 from urllib import request
 from urllib import error
-
+from fake_user_agent import user_agent
 
 def test_ip(ip, test_url):
     UA = user_agent()
