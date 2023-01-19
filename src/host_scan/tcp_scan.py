@@ -1,7 +1,8 @@
 # coding=utf-8
 """
-    based on ARP
+    based on TCP 
 """
+
 # add to the root path
 import sys
 import os
@@ -9,27 +10,24 @@ sys.path.append(os.path.dirname(__file__))                  # ..\HPScan\src\host
 sys.path.append(f"{os.path.dirname(__file__)}\\..\\")       # ..\HPScan\src
 sys.path.append(f"{os.path.dirname(__file__)}\\..\\..\\")   # ..\HPScan
 
-# module
+# module 
 import time
-from HPScan.setting import *
-from scapy.layers.inet import Ether
-from scapy.layers.l2 import ARP,srp1
- 
-def arp_scan(dst_ip, proxy_ip, proxy_port):
+from setting import *
+from scapy.layers.inet import Ether,IP,TCP
+from scapy.all import srp1
+
+
+
+def tcp_scan(dst_ip, proxy_ip, proxy_port):
     """
-    ARP_SCAN
+    TCP SCAN: send packet with SYN to the host
     """
-    arp_msg = Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(op=1, psrc=proxy_ip, pdst=dst_ip)
     try:
-        rece_msg = srp1(arp_msg, timeout=2, verbose=0)[1]
+        tcp_msg = Ether()/IP(src=proxy_ip,dst=dst_ip)/TCP(sport=proxy_port, dport=DPORT)
+        rece_msg = srp1(tcp_msg, timeout=2, verbose=False)
         time.sleep(0.05)
         if rece_msg:
-            ARP_HOST_UP.append(dst_ip)
+            TCP_HOST_UP.append(dst_ip)
     except Exception as err_msg:
         print(f"error:{err_msg}")
         sys.exit(-1)
-
-
-
-
-

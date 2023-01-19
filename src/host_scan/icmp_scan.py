@@ -1,34 +1,32 @@
 # coding=utf-8
 """
-    based on ICMP protocol
+    based on ICMP
 """
 
+# add to the root path
 import sys
 import os
-sys.path.append(os.getcwd())
+sys.path.append(os.path.dirname(__file__))                  # ..\HPScan\src\host_scan
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\")       # ..\HPScan\src
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\..\\")   # ..\HPScan
 
-# src use
-
-from scapy.layers.inet import *
-from scapy.layers.l2 import *
-from scapy.all import *
-
-from HPScan.src.helper.read_proxy_ip import get_proxy_ip
+# module
+import time
+from HPScan.setting import *
+from scapy.layers.inet import Ether,ICMP,IP
+from scapy.layers.l2 import srp1
 
 
-def icmp_scan(dst_ip, proxy_path):
+def icmp_scan(dst_ip, proxy_ip, proxy_port):
     """ICMP SCAN"""
     try:
-        src_ip = get_proxy_ip(proxy_path)
-        pkt = Ether() / IP(src=src_ip, dst=dst_ip) / ICMP(type=8) / b'hello?'  # 构造数据包
+        pkt = Ether() / IP(src=proxy_ip, dst=dst_ip) / ICMP(type=8) / b'hello?'  
         req = srp1(pkt, timeout=2, verbose=False)
+        time.sleep(0.05)
         if req:
-            return True
+            ICMP_HOST_UP.append(dst_ip)
         else:
-            return False
+            pass
     except Exception as err_msg:
-        print(f"ERROR:{err_msg}")
-
-
-
-
+        print(f"error:{err_msg}")
+        sys.exit(-1)
