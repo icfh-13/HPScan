@@ -4,8 +4,9 @@
 # add to the root path
 import sys
 import os
-sys.path.append(f"{os.path.dirname(__file__)}\\..\\")   # helper
-sys.path.append(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(__file__))  # ..\HPScan\src\ip_proxy_pool            
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\")   # ..\HPScan\src
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\..\\")   # ..\HPScan 
 
 # module
 import time

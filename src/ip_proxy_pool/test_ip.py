@@ -1,8 +1,14 @@
 """
     check if an IP is usable
 """
+# add to the root path
+import sys
+import os
+sys.path.append(os.path.dirname(__file__))  # ..\HPScan\src\ip_proxy_pool            
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\")   # ..\HPScan\src
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\..\\")   # ..\HPScan s
 
-
+# module
 import urllib
 from urllib import request
 from urllib import error

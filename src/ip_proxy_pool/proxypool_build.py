@@ -6,24 +6,14 @@
 # add to the root path
 import os
 import sys
-sys.path.append(f"{os.path.dirname(__file__)}")
-
+sys.path.append(os.path.dirname(__file__))  # ..\HPScan\src\ip_proxy_pool 
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\") # ..\HPScan\src
+sys.path.append(f"{os.path.dirname(__file__)}\\..\\..\\") # ..\HPScan
 
 # module
-from time import ctime
+from setting import *
 from spider import spider
 
-# GLOBAL VAR
-URLs = {
-    '免费代理IP': 'http://ip.yqie.com/ipproxy.htm',  
-    '66免费代理网': 'http://www.66ip.cn/',  
-    '89免费代理': 'http://www.89ip.cn/',  
-    '云代理': 'http://www.ip3366.net/',  
-    '快代理': 'https://www.kuaidaili.com/free/'  
-}
-IP_COUNT = 3000                         # 爬取的IP数量设置
-TEST_URL = "http://www.baidu.com"       # 测试网站
-FILE_NAME = ctime()                     # ip日志生成文件名
 
 
 def fetch_ip():
@@ -46,4 +36,4 @@ def fetch_ip():
             print(f"{os.getcwd()}:Can't find the IP Source!")
             exit(-1)
 
-fetch_ip()
+
