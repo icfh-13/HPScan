@@ -14,17 +14,17 @@ sys.path.append(f"{os.path.dirname(__file__)}\\..\\..\\")   # ..\HPScan
 import time
 from setting import *
 from scapy.layers.inet import Ether,IP,TCP
-from scapy.all import srp1
+from scapy.all import sr1
 
 
 
 def tcp_scan(dst_ip, proxy_ip, proxy_port):
     """
-    TCP SCAN: send packet with SYN to the host
+    TCP SCAN: SYN scan
     """
     try:
-        tcp_msg = Ether()/IP(src=proxy_ip,dst=dst_ip)/TCP(sport=proxy_port, dport=DPORT)
-        rece_msg = srp1(tcp_msg, timeout=2, verbose=False)
+        pkt = Ether()/IP(src=proxy_ip,dst=dst_ip)/TCP(sport=proxy_port, dport=DPORT)
+        rece_msg = sr1(pkt, timeout=2, verbose=False)
         time.sleep(0.05)
         if rece_msg:
             TCP_HOST_UP.append(dst_ip)

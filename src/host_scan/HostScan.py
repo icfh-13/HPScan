@@ -15,6 +15,8 @@ from scapy.all import *
 from src.helper.input import input
 from src.helper.file_handler import get_proxy_ip, get_proxy_port
 
+import setting
+
 from src.host_scan.icmp_scan import icmp_scan
 from src.host_scan.arp_scan import arp_scan
 from src.host_scan.tcp_scan import tcp_scan
@@ -47,9 +49,12 @@ class HostScan(input):
     def scan_threading(self):
         threads = []
         length = len(self.hosts)
+        # 利用生成器不断返回代理ip和port
+        ip_func = get_proxy_ip(IP_LOG_PATH_FOR_HOSTSCAN)
+        port_func = get_proxy_port(IP_LOG_PATH_FOR_HOSTSCAN)
         for ip in self.hosts:
-            proxy_ip = get_proxy_ip(IP_LOG_PATH_FOR_HOSTSCAN)
-            proxy_port = get_proxy_port(IP_LOG_PATH_FOR_HOSTSCAN)
+            proxy_ip = next(ip_func)
+            proxy_port = next(port_func)
             t = threading.Thread(target=self.func, args=(str(ip),str(proxy_ip),int(proxy_port)))
             threads.append(t)
         for i in range(length):
@@ -57,8 +62,12 @@ class HostScan(input):
         for i in range(length):
             threads[i].join()
     
-def HOST_SCAN_RUN():
+def HOST_SCAN_RUN(HOST_SCAN):
     
-
-
+    HOST_SCAN.scan_threading()
+    # 合并存活主机
+    setting.HOST_UP.extend(setting.ICMP_HOST_UP)
+    setting.HOST_UP.extend(setting.ARP_HOST_UP)
+    setting.HOST_UP.extend(setting.TCP_HOST_UP)
+    setting.HOST_UP.extend(setting.UDP_HOST_UP)
 
